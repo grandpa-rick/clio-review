@@ -1,0 +1,142 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\newcommand{\tri}{\mathbin{\triangleleft}}
+\newcommand{\St}{\mathsf{St}}
+\newcommand{\REVIEWHASH}{(pending)}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+
+\title{Review: \emph{The worker/harness weld is the regular bicomodule:\\ deciding Conjecture 5.1}}
+\author{Rick\\[2pt]\small To: Scot MacBeth (Kodamai)}
+\date{2026-10-17}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{center}
+\begin{tabular}{ll}
+Reviewed: & MacBeth WIP \texttt{2fd555a} (5 pp., email UID 405, 2026-10-17)\\
+This review: & corresponds to clio-review commit \texttt{\REVIEWHASH}; reviewing MacBeth WIP \texttt{2fd555a}\\
+Check script: & \texttt{2026-10-17-macbeth-uid405-weld-check.py} (+ \texttt{.log}), brute force, $<$1\,s
+\end{tabular}
+\end{center}
+
+Notation. I write $\St_X := X y^X$ for your $\Delta X$ (store comonoid = indiscrete category on $X$),
+because you also use $\Delta_{T^S}$ for a diagonal in \S4. All sets nonempty.
+
+\section*{Verdict}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Clause (1) and Theorem 5: correct.} I re-derived both by hand and by a direct
+  $\mathrm{Hom}$-count in $\St_T$-$\mathbf{Set}$ (not via your factorization through $y$):
+  $\bar F_B(V)\cong T^S\times V^S$ at all seven shapes run, including the generic $(2,3)$ and $(3,2)$.
+\item \textbf{(a) Handedness.} Literal answer: yes, no handedness choice with a nontrivial right
+  coaction gives exponent $S\times T$. The transported exponent at a position is the number of
+  right-coaction orbits on $B[i]=S\times T$: $|S|$ (right $\St_T$, yours), $|T|$ (right $\St_S$, or
+  $\tri$ swapped), $1$ (right $\St_{S\times T}$). The exponent is $|S\times T|$ \emph{exactly} when the
+  right comonoid is $y$, i.e.\ no right coaction. \textbf{But that is the reading you used for $A$}
+  (Thm 6 proof: $\bar A(V)=V^{S\times T}$ is $A$ as a left $\St_{S\times T}$-comodule and nothing
+  else). So Theorem 6 compares $B$ under one reading with $A$ under another. Under any
+  \emph{consistent} reading the exponents agree. The refutation as written fails, and it fails at a
+  point you list: at $|S|=1$, $|T|\ge2$ we have $\St_S=y$ and $B=y\tri\St_T=\St_T=A$ \emph{on the nose},
+  yet Theorem 6 says the worker is not the content. The argument proves too much.
+  \textbf{Verdict FALSE survives, for a different reason, on a different locus} (M1).
+\item \textbf{(b) $\sigma$.} $\sigma_1(s,t)=(s,\mathrm{const}_t)$ is well defined, injective
+  ($S\neq\emptyset$), a section of $r(s,g)=(s,g(s))$, and its image is closed under $\lambda$ and
+  $\rho$, so $\sigma(A)\subseteq B$ is a sub-bicomodule. Yes, $T\subseteq T^S$ means constant maps
+  (diagonal). But: $\sigma$ is not a comonoid map (no comonoid on $B$ is in play), the structure
+  $\sigma(A)$ inherits (left $\St_S$, right $\St_T$) is not $A$'s own $\St_{S\times T}$, the
+  direction map $\sigma^\sharp$ is never stated, and the \S5 display mislocates the $S$ (M3).
+\end{itemize}
+
+\section*{What the paper should say for clause (2)}
+Use $\sigma(A)$ as the sub-bicomodule. Its prafunctor is $\bar F_{\sigma A}(V)=T\times V^S$; that of $B$
+is $T^S\times V^S$. Same exponent; $\Sigma$-index $T$ versus $T^S$. Since $|S\times T|=|S\times T^S|$ iff
+$\min(|S|,|T|)=1$, the worker is all of the weld iff $|S|=1$ or $|T|=1$, and is the proper
+constant-branch slice of the $\Sigma$-tail otherwise. That is a clean refutation for $|S|,|T|\ge2$ and it is
+your \S5 idea promoted to the proof. Script line ``clause (2)'': your criterion $|T|\ge2$ and this one
+disagree at $(1,2)$ and $(1,3)$, agree elsewhere.
+
+\section*{Findings}
+\subsection*{MUST}
+\begin{enumerate}[label=\textbf{M\arabic*.},leftmargin=*]
+\item \textbf{p.\,4, Theorem 6 and proof; sentence ``No handedness convention repairs this.''}
+  Inconsistent comparison (above). Replace the exponent argument by the $\Sigma$-index argument; change
+  the failure locus from ``$|T|\ge2$'' to ``$|S|\ge2$ and $|T|\ge2$''; state which reading of
+  ``worker $=$ content'' is being refuted (clause (2) is not type-correct as written: $A$ is a
+  polynomial/comonoid, $F/1$ is a functor $\mathbf{Set}\to\mathbf{Set}^{T^S}$). The ``opposite reading
+  gives $(-)^T$'' remark is right but irrelevant to the gap.
+\item \textbf{p.\,4, Theorem 7.} ``indexed by the \emph{full} branch-map set $T^S$ --- precisely the
+  non-constant branch maps'' is self-contradictory: at $(2,3)$, $|T^S|=9$, non-constant $=6$; at
+  $|S|=1$ nothing is discarded but the index is $T$. Per position, $r$ forgets $g|_{S\setminus\{s\}}$
+  (fibre $T^{|S|-1}$: 3 at $(2,3)$, 4 at $(3,2)$), not ``the non-constant maps''. True statement:
+  $T^S=\mathrm{const}(T)\sqcup(\text{non-constant})$, kept slice $\sqcup$ discarded part. Clause (3)
+  as stated (discarded $=$ $\Sigma$-tail) is false; restate as ``$\Sigma$-tail index $=$ kept slice $\sqcup$ discarded
+  data'' and re-decide.
+\item \textbf{p.\,5, \S5 display.} Two different $S$'s are conflated. A's position coordinate
+  $s$ is the $\St_S$-object (the left-coaction fibre, which disappears under
+  $\St_S\text{-}\mathbf{Set}\simeq\mathbf{Set}$). The content exponent $S$ is the first
+  \emph{direction} coordinate $a$ of $(a,t)\in S\times T$. $\sigma$ sends position $s$ to position
+  $s$; it puts nothing into the exponent. Replace with: $\sigma(A)$ is the sub-bicomodule on positions
+  $\{(s,\mathrm{const}_t)\}$ (closed since $\lambda(s,g)$ moves $s$ and keeps $g$, and $\rho$ fixes
+  positions), $\sigma^\sharp=\mathrm{id}_{S\times T}$, prafunctor $T\times V^S$.
+\end{enumerate}
+
+\subsection*{SHOULD}
+\begin{enumerate}[label=\textbf{S\arabic*.},leftmargin=*]
+\item \textbf{p.\,1, Provenance and every ``SGF'' locator.} arXiv:2111.10968 is Spivak--Garner--Fairbanks,
+  \emph{Functorial aggregation}. The title you give is Niu--Spivak, arXiv:2312.00990. So the source
+  of Def.\,4.2, Rmk.\,4.3, Thm.\,4.28, Props.\,3.6, 3.9, 5.2, 5.7, Ex.\,5.6 is ambiguous. I checked
+  none of them. Fix the bibliography and re-check every locator against the print.
+\item \textbf{p.\,2, definition of a $(c,d)$-bicomodule.} As I read Niu--Spivak, a bicomodule $c
+rightarrow d$ has
+  a left $c$- and a right $d$-coaction and gives $d\text{-}\mathbf{Set}\to c\text{-}\mathbf{Set}$.
+  Your labels are the other way. You are internally consistent, so nothing breaks, but say
+  explicitly that the labels are reversed relative to the source. Also, ``regular bicomodule''
+  usually means $c$ as a $(c,c)$-bicomodule. $d\tri c$ is the composite over $y$ of $d$ and $c$
+  (your own Thm 5 proof says so). Rename it, and the title with it.
+\item \textbf{p.\,3, machine checks.} The Theorem 5 corroboration (16/64/128) is at $|S|=|T|=2$.
+  That cannot separate $T^Sy^S$ from the swapped $S^Ty^T$: both give 16 at $V=2$ and 36 at $V=3$
+  (script). At $(2,3)$ they give 36 vs 64. The axiom check is on Lemma 3, which is general nonsense,
+  and includes the degenerate shapes $(1,2)$, $(2,1)$. So it corroborates nothing in dispute. Check
+  $\bar F_B$ by a direct Hom-count at a generic shape.
+\item \textbf{p.\,1, registry.} Node \texttt{weld-is-regular-bicomodule} [proved] bundles (1)--(3).
+  (1) stands. (2) and (3) do not, as written. Split the node; the bundle inherits its weakest input.
+\item \textbf{pp.\,3--4.} Put the nonemptiness hypothesis in the statements, not in a parenthesis.
+  $\St_S\text{-}\mathbf{Set}\simeq\mathbf{Set}$ and the injectivity of $T\hookrightarrow T^S$ both
+  need $S\neq\emptyset$.
+\end{enumerate}
+
+\subsection*{NIT}
+\begin{enumerate}[label=\textbf{N\arabic*.},leftmargin=*]
+\item $\Delta$ means both store comonoid and diagonal $\Delta_{T^S}$ (\S4). Rename one.
+\item p.\,3, Thm 5 proof: ``no equalizer, since $y$ is the unit'' --- say ``the composite over $y$ is
+  plain $\tri$''.
+\item p.\,5, \S6: ``read the whole input state $S$'' is misleading. After transport, $\bar F_B$ is an
+  endofunctor of $\mathbf{Set}$. The state lives only in the fibration over $\St_S$-objects and in the
+  direction coordinate $a$. Drop the gloss or make it precise.
+\end{enumerate}
+
+\section*{Grade}
+Clause (1) and Theorem 5: \textbf{checked-sober} (re-derived line by line, independent Hom-count).
+Clause (2): verdict FALSE \textbf{checked-sober} only in the corrected form ($\Sigma$-index, $|S|,|T|\ge2$).
+Your argument and locus are \textbf{not accepted}. Clause (3): false as stated; needs restating.
+Overall claim as submitted: \textbf{sketched}.
+
+\section*{Appendix: script output (abridged)}
+{\small\begin{verbatim}
+(|S|,|T|)  exp: y  St_T  St_S  St_SxT   |T^S|  noncst  A=B?   (2) yours / consistent
+ (1,2)          2   1     2     1        2      0      True    FALSE / holds   DISAGREE
+ (2,1)          2   2     1     1        1      0      True    holds / holds
+ (2,2)          4   2     2     1        4      2      False   FALSE / FALSE
+ (2,3)          6   2     3     1        9      6      False   FALSE / FALSE
+ (3,2)          6   3     2     1        8      6      False   FALSE / FALSE
+F_B(V) at (2,2): 16, 36 = swapped order 16, 36  [no separation]
+F_B(V) at (2,3): 36, 81 vs swapped 64, 216
+sigma: injective, r.sigma = id, image closed under lambda,rho: True at all shapes
+\end{verbatim}}
+
+\end{document}

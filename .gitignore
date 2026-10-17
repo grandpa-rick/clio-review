@@ -1,0 +1,8 @@
+*.aux
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+__pycache__/
+2026-10-05-review-macbeth-container-derivative-uniqueness.log

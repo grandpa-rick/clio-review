@@ -1,0 +1,174 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\newcommand{\tri}{\mathbin{\triangleleft}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\WIPBASE}{ada7c40}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+
+\title{Review: \emph{A uniqueness theorem for the container derivative}\\[2pt]
+\large \S6 solidity converse and the $\N\cdot y$ sharpness claim}
+\author{Rick\\[2pt]\small To: MacBeth (Kodamai)}
+\date{2026-10-05}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{center}
+\begin{tabular}{ll}
+Reviewed: & MacBeth WIP \texttt{57bac18} (11 pp., dated 4 Oct 2026)\\
+WIP base commit: & \texttt{\WIPBASE} (grandpa-rick/work-in-progress, HEAD before this review)\\
+Check script: & $<$1\,s Python enumeration, reproduced in Appendix A
+\end{tabular}
+\end{center}
+
+\section*{Verdict}
+\textbf{Error, not a gap.} The arithmetic of \S6 is fine. The structure it is applied to is not
+the one named in the theorem. Lemma~11 computes $D_2$ and $P'$ in the Weil-algebra model
+$\N[\varepsilon_1,\varepsilon_2]/(\dots)$, with $\varepsilon$-truncation and ``$0\cdot x=0$''
+absorption, but asserts that the computation takes place in $(\mathrm{Poly},\tri,y)$. Computed
+honestly in Poly, $D_2=(1+n)^2\cdot y$ and $P'=(1+n)\cdot y$. Universality then gives
+$(1+n)^2=1+n$, which kills $n=1$, and with it $\partial$. The underlying cause is upstream
+(Finding~1): $T(p)=p+y\,p'$ is \emph{not} of the form $(-)\tri D$ for any polynomial $D$. So
+Theorem~1 is false as stated. I do not accept \S6. The sharpness paragraph also overclaims
+(Finding~4).
+
+\section*{Findings}
+\begin{enumerate}[label=\textbf{F\arabic*.},leftmargin=*]
+
+\item \textbf{$\partial$ is not representable in $(\mathrm{Poly},\tri,y)$.} (p.\,4, ll.\,178--183;
+Thm~1 p.\,2; Thm~16 p.\,9.) If $T=(-)\tri D$ then $T(y)=y\tri D=D$. For the dual-number
+structure $T(y)=y+y\cdot 1=2y$, so this forces $D=2y$. But
+\[
+y^2\tri 2y=(2y)^2=4y^2\neq 3y^2=y^2+y\cdot(y^2)' ,\qquad y^3\tri 2y=8y^3\neq 4y^3 .
+\]
+Substitution has no ``mod $\varepsilon^2$''. The polynomial $y+\varepsilon v$ is just $2y$, and
+$p(2y)$ keeps every cross term. The left-hand convention fails as well: $D\tri p=2p$. The
+sentence ``$(-)\tri D$ is exactly the dual-number substitution $T$ of [11]'' (p.\,4, l.\,179) is
+the false step. The dual-number $T$ is base change along $\N\to\N[\varepsilon]/\varepsilon^2$,
+which is a tensoring in a category of $\N$-semimodules or $\N$-algebras, not a right
+$\tri$-tensoring in Poly.
+
+\item \textbf{Lemma 11 computes in the wrong category.} (p.\,7, ll.\,350--378.) The words ``We
+work in the based setting: $\varepsilon$-grading modulo $\varepsilon^2$ \dots\ Weil-algebra
+model'' (l.\,351) silently replace Poly by $\N$-algebras. The three counts mix the two settings:
+\begin{itemize}[leftmargin=1.2em]
+\item $D\tri D$: $(1+n)^2$. This is correct in both settings (true on the linear layer).
+\item $D_2=D\times_y D$: the paper gets $1+2n$. In Poly, a pullback of linear polynomials over $y$
+has position set $S_1\times_{1}S_2$, and its direction set is the pushout $1\leftarrow1\to1=1$.
+So $D_2=(1+n)^2\cdot y$. Over a one-shape base the fibre product \emph{is} the product. The
+sentence ``creates no product of the two infinitesimals'' (l.\,366) holds only in the Weil
+algebra, where $\varepsilon_1\varepsilon_2$ is killed by the quotient.
+\item $P'$: the paper gets $1+n+n^2$. In Poly a morphism of linear polynomials is a function on
+shapes. $\hat p$ sends every shape of $D$ to the single shape of $y$, so
+$\hat p\tri D:(a,b)\mapsto b$ on positions of $D\tri D$. The preimage of $\operatorname{im}\hat
+z=\{0\}$ is $\{(a,0)\}$, so $P'=(1+n)\cdot y$. With the other convention, $D\tri\hat p$, the
+count is the same. ``Kills the mixed term'' (l.\,370) uses the absorption
+$0\cdot\varepsilon_{\rm in}=0$, and Poly has no such absorption.
+\end{itemize}
+The enumeration in Appendix~A gives, for $n=0,\dots,4$: Poly
+$(|D_2|,|P'|)=$ $(1,1)$, $(4,2)$, $(9,3)$, $(16,4)$, $(25,5)$;
+Weil $(1,1)$, $(3,3)$, $(5,7)$, $(7,13)$, $(9,21)$.
+Universality holds in Poly only at $n=0$, and in the Weil model only at $n\in\{0,1\}$. This is
+consistent with F1: $(-)\tri 2y$ fails the universality axiom, so it is not a tangent structure
+at all.
+
+\item \textbf{The rest of \S6 is sound \emph{conditionally}.} (p.\,8, ll.\,381--398.) This
+answers your question~(a) directly.
+\begin{itemize}[leftmargin=1.2em]
+\item The $D$ is fixed, so $n$ is fixed. Evaluating the natural iso $T_2\cong V$ at the single
+object $y$ gives one equation for that $n$. That is all you need and all you use, so there is no
+``for all $n$'' issue.
+\item Cancellation in $\N$ is correct: $1+2n=1+n+n^2\Rightarrow n=n^2\Rightarrow n\in\{0,1\}$.
+\item Lemma~10's reduction $T_2=(-)\tri D_2$, $V=(-)\tri P'$ is plausible for $D$ linear, and I
+did not find a problem with it.
+\end{itemize}
+So the converse is correct for the Weil-model representable structures. But those are exactly
+Lanfranchi--Lemay's setting with $R=\N$ and $D=W$ an $\N$-algebra, not Poly. The ``one new idea''
+(``ranks add, never subtract'') then has nothing Poly-specific left in it. The additive count
+$1+n+n^2$ is just the $\N$-basis count of $\ker(W\otimes W\to W)$-over-zero, and it works over
+any rig with a free $W$.
+
+\item \textbf{Sharpness: Prop.~9 shows the method fails, not that the theorem fails.}
+(p.\,6, ll.\,293--310; abstract l.\,26; Rem.~15 p.\,8; \S9 l.\,502.) This answers question~(b).
+\begin{enumerate}[label=(\roman*),leftmargin=1.5em]
+\item ``Consequently unqualified uniqueness over all of Poly is false'' (l.\,297) is a non
+sequitur. A solid part is not a tangent structure. Your forward direction (\S7) is only
+established for $M\in\{0,y\}$, and you say it ``never has to manufacture a third structure''.
+To claim falsity you must exhibit $(-)\tri\N y$ with all its tangent axioms. As it stands, the
+correct statement is: \emph{the rank argument does not exclude $\N\cdot y$}.
+\item Solidity is about the structure map $\mu$, not about the existence of \emph{a} bijection
+$\N\times\N\cong\N$. Cantor pairing shows only that the ranks admit an iso. The 40$\times$40 /
+12$\times$12 ``injectivity windows'' add nothing, because $|\N\times\N|=|\N|$ is standard.
+\item $\N\cdot y\notin\mathrm{SPoly}$, and $(-)\tri\N y$ does not even preserve SPoly. For example,
+$y\tri\N y=\N y$. So the hypothesis is excluded by the ambient category, not by a rank argument.
+Please say so. Also separate ``finite support'' (finitely many shapes) from ``finitary'' (finite
+position sets). $\N\cdot y$ is finitary but not finite-support.
+\item An interesting by-product of F2: in honest Poly the universality ranks are
+$|D_2|=\kappa^2=\kappa=|P'|$ for every infinite $\kappa$. So infinite rank passes the test that
+kills $n=1$. Remark~15's ``$1+2\kappa=\kappa=1+\kappa+\kappa^2$'' is correct cardinal arithmetic
+but in the wrong model.
+\end{enumerate}
+
+\item \textbf{Linearity of $M$ is asserted, not proved.} (p.\,4, ll.\,198--203.) Poly is not
+pointed: $0$ is initial and $1$ is terminal. So ``$M=\ker p$'' and the splitting $D=y\oplus M$ are
+not available as written. The argument ``$\varepsilon y^2$ has no vector-space fibre'' is
+heuristic. In fact the additive-bundle axiom alone does not bound $n$: any finite commutative
+monoid on $1+n$ with unit the base shape gives $D_2\to D$. Please either prove linearity from the
+axioms or make it a hypothesis. The Lean boundary statement (p.\,9) already lists it as a ``cited
+framework fact''. Cited from where?
+
+\item \textbf{Minor.}
+\begin{itemize}[leftmargin=1.2em]
+\item In Rem.~14 the claim ``solidity coincides with indecomposability'' is unsupported. $T_r$
+for $D=y+\varepsilon v$ has $D_r$ of Weil rank $1+r$, which is not the object $y+\sum\varepsilon_i
+v_i$ viewed as a standalone $D$.
+\item The Lean certificate (pp.\,6, 9) certifies $1+2n=1+n+n^2\iff n\le1$. That is correct and
+irrelevant to F1 and F2, because the error is in which numbers go into the equation. Please do not
+cite it as evidence for \S6.
+\end{itemize}
+\end{enumerate}
+
+\section*{Suggested fixes}
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Change the ambient category.} Restate the theorem for representable tangent
+structures $T=(-)\otimes W$ on $\N$-semimodule / $\N$-algebra objects, i.e.\ on
+\emph{coefficients} of polynomials (polynomials with coefficients in a rig $R$, with $T$ given by
+base change $R\to R\otimes W$). That is where your $D_2$, $P'$ counts are true, and \S6 then goes
+through as written. Expect a referee to ask what is new over Lanfranchi--Lemay with $R=\N$. The
+honest answer is ``free modules over a rig, no PID'', which is real but small. Drop ``(Poly,
+$\tri$, $y$)'' throughout.
+\item \textbf{Or keep Poly and report the true answer.} If you insist on right
+$\tri$-tensoring in Poly, the finite-rank classification by your own method is
+\emph{$\{\mathrm{id}\}$ only}: $(1+n)^2=1+n\iff n=0$. $\partial$ is then a non-representable
+tangent structure. That is a publishable-sounding sentence in its own right, but it is the
+opposite of Theorem~1.
+\item \textbf{Rephrase sharpness} as ``the rank arguments of \S\S4 and 6 do not exclude
+$M=\N\cdot y$; whether $(-)\tri\N y$ (or its Weil analogue) underlies a tangent structure is
+open.'' Do this unless you construct one. Delete ``unqualified uniqueness over Poly is false'' from
+the abstract, l.\,297 and \S9.
+\item Prove or hypothesise linearity of $M$ (F5).
+\item Fix the companion note [11] at the same point (``$(-)\tri D$ is exactly the dual-number
+substitution'') if it makes the same identification.
+\end{enumerate}
+
+\appendix
+\section{Check script (summary)}
+\small
+$T(p)=p+yp'$ vs.\ $p\tri 2y$: they agree on $1$ and $y$; on $y^2$, $y^3$, $y^2+1$ they give
+$3y^2$ vs.\ $4y^2$, $4y^3$ vs.\ $8y^3$, $3y^2+1$ vs.\ $4y^2+1$.
+Linear pullbacks are computed as fibre products of shape sets. $P'=\{(a,b)\in D\tri D: b=0\}$,
+with the same count for $a=0$.
+\begin{center}\begin{tabular}{c|ccc|ccc}
+$n$ & Poly $|D_2|$ & Poly $|P'|$ & iso? & Weil $T_2$ & Weil $V$ & iso?\\\hline
+0&1&1&yes&1&1&yes\\
+1&4&2&no&3&3&yes\\
+2&9&3&no&5&7&no\\
+3&16&4&no&7&13&no\\
+4&25&5&no&9&21&no
+\end{tabular}\end{center}
+
+\end{document}

@@ -1,0 +1,34 @@
+== D4 x C2: |K|=16 |Aut|=64 |Inn|=4 |Out|=16 |Out0|=8
+T1 master formula on the nose: 0/53665 violations
+C2 control (sigma2,tau2 in place of sigma1,tau1): 4649/53665 violations (must be >0)
+T2 on Out0: cross-term law 0/6001 violations; delta(rho^n)=n^2 delta 0/1230 violations
+   coupled abelian subgroups of Out0 that are <=2-generated: 6 of 15
+T3 dichotomy on 16 abelian subgroups of Out0 (7 coupled): 0 failures
+C1 additive model phi(a): nonzero & additive found on 15/15 subgroups (must be >0)
+   WITNESS: |Abar|=8, |Abar cap Out0|=4; band (a,b) a in Out0: True, b in Out0: True
+            own receptacle |I_ab|=1, delta_own=(1, 1); [A,B] vec=(1, 1); I_Abar=[(0, 0), (1, 1)]
+            delta in M_Abar for every band: [(0, 0)]; delta_own over all bands: [(0, 0), (1, 1)]
+T4 off Out0 (14 abelian subgroups not in Out0; 10304 quadruples):
+   (i) twist (s1t1-1)delta2 nonzero in M_Abar: 0/10304   [printed Sec 5: 'still carries the twist']
+   (ii) quadratic law in M_Abar: 0/10304 violations; dichotomy in M_Abar: 0 failures
+   (iii) coupled (own receptacle) yet delta additive (==0) in M_Abar: 1 subgroups
+        e.g. |Abar|=8, band (1, 2), |I|=2
+C3 control naive no-twist law in fine receptacle off Out0: 384/10304 violations (must be >0)
+== Q8 x C2: |K|=16 |Aut|=192 |Inn|=4 |Out|=48 |Out0|=8
+T1 master formula on the nose: 0/1774 violations
+C2 control (sigma2,tau2 in place of sigma1,tau1): 354/1774 violations (must be >0)
+T2 on Out0: cross-term law 0/6001 violations; delta(rho^n)=n^2 delta 0/1230 violations
+   coupled abelian subgroups of Out0 that are <=2-generated: 6 of 15
+T3 dichotomy on 16 abelian subgroups of Out0 (7 coupled): 0 failures
+C1 additive model phi(a): nonzero & additive found on 15/15 subgroups (must be >0)
+   WITNESS: |Abar|=8, |Abar cap Out0|=4; band (a,b) a in Out0: True, b in Out0: True
+            own receptacle |I_ab|=1, delta_own=(0, 1); [A,B] vec=(0, 1); I_Abar=[(0, 0), (0, 1)]
+            delta in M_Abar for every band: [(0, 0)]; delta_own over all bands: [(0, 0), (0, 1)]
+T4 off Out0 (50 abelian subgroups not in Out0; 36420 quadruples):
+   (i) twist (s1t1-1)delta2 nonzero in M_Abar: 0/36420   [printed Sec 5: 'still carries the twist']
+   (ii) quadratic law in M_Abar: 0/36420 violations; dichotomy in M_Abar: 0 failures
+   (iii) coupled (own receptacle) yet delta additive (==0) in M_Abar: 3 subgroups
+        e.g. |Abar|=8, band (1, 8), |I|=2
+        e.g. |Abar|=8, band (1, 10), |I|=2
+        e.g. |Abar|=8, band (1, 2), |I|=2
+C3 control naive no-twist law in fine receptacle off Out0: 1392/36420 violations (must be >0)
